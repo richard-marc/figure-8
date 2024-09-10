@@ -34,7 +34,7 @@ const EditableValue: React.FC<{
     setIsEditing(false);
     const newValue = Number(tempValue);
     if (!isNaN(newValue)) {
-      setValue(Math.min(Math.max(newValue, sliderMin), sliderMax));
+      setValue(newValue);
     } else {
       setTempValue(value.toFixed(step < 1 ? 2 : 0));
     }
