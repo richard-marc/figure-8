@@ -12,6 +12,21 @@ root.render(
   <React.StrictMode>
     <Helmet>
       <title>rikko.cool</title>
+      <meta name="description" content="A cool particle animation by rikko" />
+      
+      {/* Open Graph / Facebook */}
+      <meta property="og:type" content="website" />
+      <meta property="og:url" content="https://rikko.cool/" />
+      <meta property="og:title" content="rikko.cool" />
+      <meta property="og:description" content="A cool particle animation by rikko" />
+      <meta property="og:image" content="https://rikko.cool/preview.jpg" />
+
+      {/* Twitter */}
+      <meta property="twitter:card" content="summary_large_image" />
+      <meta property="twitter:url" content="https://rikko.cool/" />
+      <meta property="twitter:title" content="rikko.cool" />
+      <meta property="twitter:description" content="A cool particle animation by rikko" />
+      <meta property="twitter:image" content="https://rikko.cool/preview.jpg" />
     </Helmet>
     <App />
   </React.StrictMode>
