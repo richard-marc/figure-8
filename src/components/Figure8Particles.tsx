@@ -12,8 +12,8 @@ interface Figure8ParticlesProps {
 
 const Figure8Particles: React.FC<Figure8ParticlesProps> = ({ particleCount, particleSize, speed, noise, opacity }) => {
   const meshRef = useRef<THREE.InstancedMesh>(null);
-  const tempObject = new THREE.Object3D();
-  const clock = new THREE.Clock();
+  const tempObject = useRef(new THREE.Object3D());
+  const clock = useRef(new THREE.Clock());
 
   const FIGURE_8_SCALE = 3;
 
@@ -22,31 +22,29 @@ const Figure8Particles: React.FC<Figure8ParticlesProps> = ({ particleCount, part
   const particleRandomOffsets = useMemo(() => new Float32Array(particleCount * 3), [particleCount]);
 
   useEffect(() => {
-    if (meshRef.current) {
-      for (let i = 0; i < particleCount; i++) {
-        particleOffsets[i] = (i / particleCount) * Math.PI * 2;
-        particleRandomOffsets[i * 3] = (Math.random() - 0.5) * noise;
-        particleRandomOffsets[i * 3 + 1] = (Math.random() - 0.5) * noise;
-        particleRandomOffsets[i * 3 + 2] = (Math.random() - 0.5) * noise;
-      }
+    for (let i = 0; i < particleCount; i++) {
+      particleOffsets[i] = (i / particleCount) * Math.PI * 2;
+      particleRandomOffsets[i * 3] = (Math.random() - 0.5) * noise;
+      particleRandomOffsets[i * 3 + 1] = (Math.random() - 0.5) * noise;
+      particleRandomOffsets[i * 3 + 2] = (Math.random() - 0.5) * noise;
     }
   }, [particleCount, noise, particleOffsets, particleRandomOffsets]);
 
   useFrame(() => {
     if (meshRef.current) {
-      const time = clock.getElapsedTime() * speed;
+      const time = clock.current.getElapsedTime() * speed;
       
       for (let i = 0; i < particleCount; i++) {
         const i3 = i * 3;
         setParticlePosition(i, time, particlePositions, i3);
 
-        tempObject.position.set(
+        tempObject.current.position.set(
           particlePositions[i3],
           particlePositions[i3 + 1],
           particlePositions[i3 + 2]
         );
-        tempObject.updateMatrix();
-        meshRef.current.setMatrixAt(i, tempObject.matrix);
+        tempObject.current.updateMatrix();
+        meshRef.current.setMatrixAt(i, tempObject.current.matrix);
       }
       meshRef.current.instanceMatrix.needsUpdate = true;
     }
